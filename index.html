@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="preload" href="fonts/Vabedo.ttf" as="font" type="font/ttf" crossorigin>
+  <title>Marmelade</title>
+  <meta name="description" content="Marmelade studio: location and parking, base, 2nd floor plan, photos of the 331 m² hall and the price list for services and studio rental.">
+  <style>
+  /* Layout: one centred column on a navy ground, plans and photos stacked at full column width,
+     the price list on a pink band under a navy pill heading. Proportions follow the 1920 px InDesign page. */
+  :root {
+    --navy: #002166;
+    --pink: #FF9EAB;
+    --pink-soft: #FFB6BF;   /* hover on cells you can type into */
+    --paper: #FFFFFF;       /* behind images while they load */
+    --font-display: "Vabedo", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+
+    --col: 1563px;                              /* panel width on the 1920 px page */
+    --fs-list: clamp(15px, 2.3vw, 44px);        /* price list, tab and notes */
+    --rule: clamp(1.5px, 0.13vw, 2.5px);
+    --gap: clamp(16px, 5vw, 96px);              /* between panels */
+    color-scheme: light;
+  }
+
+  @font-face {
+    font-family: "Vabedo";
+    src: url("fonts/Vabedo.ttf") format("truetype");
+    font-display: block;
+  }
+
+  body {
+    margin: 0;
+    background: var(--navy);
+    color: var(--pink);
+    font-family: var(--font-display);
+  }
+
+  .band {
+    padding-left: max(16px, 9.3vw, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, 9.3vw, env(safe-area-inset-right, 0px));
+  }
+  .col { width: min(var(--col), 100%); margin-inline: auto; }
+
+  /* Navy band: logo and pictures */
+  .band--navy {
+    background: var(--navy);
+    padding-block: clamp(32px, 9.2vw, 176px) clamp(48px, 12.3vw, 236px);
+  }
+  .logo { margin: 0 0 clamp(28px, 7.5vw, 145px); line-height: 0; }
+  .logo svg { display: block; width: 100%; height: auto; }
+  .logo path { fill: var(--pink); }
+
+  .panels { display: grid; gap: var(--gap); }
+  .panels figure { margin: 0; }
+  .panels img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 3126 / 2050;
+    background: var(--paper);
+  }
+
+  /* Pink band: price list */
+  .band--pink {
+    background: var(--pink);
+    color: var(--navy);
+    padding-block: clamp(32px, 6vw, 115px) clamp(48px, 7.9vw, 152px);
+    font-size: var(--fs-list);
+    text-transform: uppercase;
+  }
+  .band--pink .col { display: flex; flex-direction: column; align-items: center; }
+
+  .tab {
+    margin: 0;
+    padding: 0.5em 1.5em 0.6em;
+    background: var(--navy);
+    color: var(--pink);
+    border-radius: 1.15em;
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 1.1;
+    text-align: center;
+    text-wrap: balance;
+    max-width: 100%;
+  }
+
+  .table-wrap { width: 100%; min-width: 0; margin-top: clamp(24px, 4.2vw, 80px); }
+  .prices {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    --radius: calc(0.7 * var(--fs-list));
+  }
+  .prices th, .prices td {
+    padding: 0.88em 0.3em;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: normal;
+    line-height: 0.95;
+    overflow-wrap: break-word;
+  }
+  .prices thead th {
+    background: var(--navy);
+    color: var(--pink);
+    padding-block: 0.42em;
+    border-right: var(--rule) solid var(--pink);
+    overflow-wrap: normal;
+    word-break: keep-all;
+    hyphens: manual;
+  }
+  .prices thead th:last-child { border-right: 0; }
+  .prices .c-item  { width: 27%; }
+  .prices .c-unit  { width: 11%; }
+  .prices .c-rate  { width: 22%; }
+  .prices .c-qty   { width: 17%; }
+  .prices .c-total { width: 23%; }
+  .prices tbody th { text-wrap: balance; }
+
+  /* rounded outer corners */
+  .prices thead tr > :first-child { border-top-left-radius: var(--radius); }
+  .prices thead tr > :last-child  { border-top-right-radius: var(--radius); }
+  .prices tfoot tr > :first-child { border-bottom-left-radius: var(--radius); }
+  .prices tfoot tr > :last-child  { border-bottom-right-radius: var(--radius); }
+
+  .prices tbody th, .prices tbody td {
+    border-right: var(--rule) solid var(--navy);
+    border-bottom: var(--rule) solid var(--navy);
+  }
+  .prices tbody tr > :first-child { border-left: var(--rule) solid var(--navy); }
+
+  .prices td.qty { position: relative; padding: 0; }
+  .prices td.qty input {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0 0.3em;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    text-transform: none;
+    appearance: textfield;
+    -moz-appearance: textfield;
+    cursor: text;
+  }
+  .prices td.qty input::-webkit-outer-spin-button,
+  .prices td.qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .prices td.qty input:hover { background: var(--pink-soft); }
+  .prices td.qty input:focus { outline: none; }
+  .prices td.qty input:focus-visible,
+  .prices td.qty input:focus {
+    background: var(--pink-soft);
+    outline: max(2px, var(--rule)) solid var(--navy);
+    outline-offset: calc(-3 * var(--rule));
+  }
+
+  .prices tfoot th, .prices tfoot td {
+    background: var(--navy);
+    color: var(--pink);
+    padding-block: 0.6em;
+  }
+
+  .notes {
+    margin: clamp(20px, 3.3vw, 64px) 0 0;
+    max-width: 25em;
+    line-height: 1.05;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .notes span { display: block; }
+
+  @media (max-width: 700px) {
+    .band {
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .prices .c-unit, .prices .col-unit { display: none; }
+    .prices .c-item  { width: 31%; }
+    .prices .c-rate  { width: 24%; }
+    .prices .c-qty   { width: 20%; }
+    .prices .c-total { width: 25%; }
+    .prices th, .prices td { padding-inline: 0.2em; }
+    .prices thead th { font-size: 0.8em; padding-inline: 0.1em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+  </style>
+</head>
+<body>
+
+<div class="band band--navy">
+  <div class="col">
+    <h1 class="logo">
+      <svg viewBox="185.01 176.44 1566.25 230.24" role="img" aria-labelledby="logo-title"><title id="logo-title">Marmelade</title><path d="M 348.57 191.41 C 352.77 189.48 356.88 188.52 360.91 188.52 C 370.88 188.52 378.23 193.42 382.96 203.22 C 387.16 212.14 389.26 224.84 389.26 241.29 C 389.26 249.51 388.82 259.14 387.95 270.16 C 387.25 278.56 386.9 287.32 386.9 296.42 C 386.9 304.82 387.77 312.96 389.52 320.83 C 391.1 328.01 393.99 336.94 398.19 347.61 C 402.74 358.81 405.01 367.57 405.01 373.87 C 405.01 376.49 404.57 379.12 403.7 381.74 C 401.78 386.29 398.62 389.97 394.25 392.77 C 389.7 395.57 385.15 396.96 380.6 396.96 C 373.77 396.96 367.38 394.43 361.43 389.36 C 352.68 381.3 348.3 369.49 348.3 353.91 C 348.3 348.14 348.66 343.41 349.36 339.73 C 349.36 339.73 349.53 337.81 349.88 333.96 C 349.88 326.61 347.78 321.27 343.58 317.95 C 341.3 316.2 338.68 315.32 335.7 315.32 C 329.75 315.32 325.29 317.86 322.32 322.93 C 320.74 325.56 319.08 329.85 317.33 335.8 C 315.05 343.85 312.52 349.8 309.71 353.65 C 306.91 357.5 303.33 360.48 298.95 362.58 C 295.1 364.32 292.39 365.2 290.81 365.2 L 290.29 365.2 C 289.94 365.02 289.68 364.94 289.5 364.94 L 287.93 364.94 C 282.67 364.41 278.82 362.23 276.37 358.38 C 273.92 354.7 272.35 348.4 271.64 339.47 C 270.95 330.37 269.9 323.98 268.5 320.31 C 267.1 316.63 264.64 313.66 261.14 311.38 C 259.39 310.16 256.86 309.54 253.53 309.54 C 249.16 309.54 245.66 310.86 243.03 313.48 C 238.83 317.68 236.73 323.63 236.73 331.34 C 236.73 335.36 236.82 338.07 236.99 339.47 C 237.52 346.82 237.78 352.6 237.78 356.8 C 237.78 362.05 237.25 365.99 236.2 368.61 C 234.98 371.59 233.05 374.39 230.43 377.02 C 224.65 383.32 217.91 386.47 210.21 386.47 C 205.84 386.47 201.73 385.42 197.88 383.32 C 189.3 378.41 185.01 370.19 185.01 358.64 C 185.01 352.16 186.85 341.4 190.52 326.35 C 195.77 305.87 198.84 292.92 199.71 287.49 C 200.94 279.44 201.9 268.85 202.6 255.72 C 203.48 241.72 204.79 231.48 206.54 225.01 C 208.29 218.88 211.79 213.46 217.04 208.73 C 222.12 204.18 227.11 201.91 232 201.91 C 235.33 201.91 238.66 202.7 241.98 204.27 C 251.08 208.47 260.45 218.45 270.07 234.2 C 273.75 240.67 277.51 245.48 281.36 248.64 C 284.68 251.44 288.36 252.84 292.39 252.84 C 296.59 252.84 300.61 251.09 304.46 247.59 C 308.31 243.91 312.6 237.7 317.33 228.95 C 324.16 216.7 329.58 208.21 333.61 203.48 C 338.5 197.71 343.49 193.68 348.57 191.41 M 496.7 258.35 C 493.55 256.95 490.75 256.25 488.3 256.25 C 481.65 256.25 476.4 259.49 472.55 265.96 C 470.8 268.59 469.92 273.05 469.92 279.35 C 469.92 285.3 470.8 290.29 472.55 294.32 C 476.75 303.77 482.35 308.5 489.35 308.5 C 493.9 308.5 498.19 306.22 502.21 301.67 C 504.66 299.22 506.15 296.68 506.68 294.05 C 507.38 291.08 507.73 287.23 507.73 282.5 C 507.73 277.6 507.38 273.75 506.68 270.95 C 505.98 268.85 504.57 266.49 502.48 263.86 C 500.03 260.71 498.1 258.88 496.7 258.35 M 487.25 182.74 C 489.52 182.04 492.68 181.69 496.7 181.69 C 502.65 181.69 507.9 182.83 512.45 185.11 C 520.5 189.13 526.89 197.27 531.62 209.52 C 536.52 222.12 540.11 239.97 542.38 263.07 C 545.71 296.16 550.52 321.62 556.82 339.47 C 562.25 354.88 564.96 365.02 564.96 369.93 C 564.96 377.45 562.33 383.84 557.08 389.09 C 552.53 393.64 546.84 395.92 540.02 395.92 L 538.7 395.92 C 538.36 395.92 538 395.83 537.66 395.66 L 537.13 395.66 C 531.53 395.13 526.98 393.29 523.48 390.14 C 519.98 386.99 516.21 381.21 512.19 372.81 C 508.51 364.77 504.84 359.25 501.16 356.27 C 497.48 353.12 493.02 351.55 487.77 351.55 C 481.47 351.55 473.33 355.75 463.36 364.15 C 456.88 369.23 452.07 372.55 448.92 374.12 C 444.02 376.4 439.38 377.54 435.01 377.54 C 429.4 377.54 424.42 375.79 420.04 372.29 C 415.66 368.79 412.86 364.24 411.64 358.64 C 411.29 355.84 411.11 354.18 411.11 353.65 C 411.11 347.35 413.56 337.9 418.47 325.3 C 425.11 307.97 429.84 294.84 432.64 285.92 C 435.09 277.69 437.28 268.15 439.2 257.3 C 440.26 249.77 441.74 242.6 443.67 235.77 C 445.94 228.25 450.06 219.67 456.01 210.04 C 461.96 200.42 467.38 193.86 472.28 190.36 C 477.01 186.68 482 184.14 487.25 182.74 M 655.6 237.61 C 652.45 236.21 649.47 235.51 646.67 235.51 C 641.24 235.51 636.25 237.26 631.7 240.76 C 626.98 244.44 623.83 248.81 622.25 253.89 C 621.55 256.51 621.2 258.7 621.2 260.45 C 621.2 267.28 624.09 273.05 629.87 277.78 C 631.96 279.35 633.54 280.23 634.59 280.4 C 636.34 280.75 638.97 280.93 642.47 280.93 C 648.42 280.93 652.79 279.88 655.6 277.78 C 663.12 272.53 666.88 265.35 666.88 256.25 C 666.88 251.18 665.22 246.8 661.9 243.12 C 658.92 240.15 656.82 238.31 655.6 237.61 M 641.16 179.07 C 647.11 178.72 650.52 178.54 651.39 178.54 C 666.97 178.54 680.36 182.13 691.56 189.3 C 700.14 194.73 706.96 201.91 712.04 210.83 C 717.11 219.93 719.65 229.3 719.65 238.93 C 719.65 245.75 718.43 252.66 715.98 259.66 C 713.53 266.84 709.24 275.5 703.11 285.65 C 698.39 294.05 696.02 300.71 696.02 305.61 C 696.02 312.43 699.88 320.75 707.58 330.55 C 711.78 336.32 714.49 340.44 715.71 342.89 C 716.94 345.69 717.73 349.45 718.08 354.18 L 718.08 356.27 C 718.08 364.15 715.89 370.89 711.52 376.49 C 707.31 381.91 701.28 384.63 693.4 384.63 C 689.55 384.63 683.25 382.44 674.5 378.06 C 664.35 372.99 657.87 370.45 655.07 370.45 C 653.49 370.45 651.92 370.71 650.34 371.24 C 645.45 372.99 641.16 376.58 637.48 382 C 633.28 387.95 629.08 392.42 624.88 395.39 C 620.85 398.37 616.65 399.94 612.28 400.12 L 611.49 400.12 C 611.14 400.29 610.79 400.38 610.44 400.38 L 608.86 400.38 C 602.56 400.38 596.88 397.84 591.8 392.77 C 587.95 389.27 585.5 385.5 584.45 381.48 C 583.23 376.93 582.61 370.45 582.61 362.05 C 582.61 357.33 583.05 349.01 583.92 337.11 C 584.97 325.21 585.5 315.84 585.5 309.02 C 585.5 297.46 584.89 287.84 583.66 280.14 C 583.48 279.62 581.56 270.43 577.89 252.57 C 574.73 238.75 573.16 229.21 573.16 223.96 C 573.16 215.38 576.48 207.86 583.14 201.38 C 588.56 196.13 595.56 191.84 604.14 188.52 C 616.56 183.62 628.91 180.46 641.16 179.07 M 897.45 191.41 C 901.65 189.48 905.77 188.52 909.79 188.52 C 919.77 188.52 927.12 193.42 931.84 203.22 C 936.04 212.14 938.14 224.84 938.14 241.29 C 938.14 249.51 937.71 259.14 936.83 270.16 C 936.13 278.56 935.78 287.32 935.78 296.42 C 935.78 304.82 936.66 312.96 938.41 320.83 C 939.98 328.01 942.87 336.94 947.07 347.61 C 951.62 358.81 953.89 367.57 953.89 373.87 C 953.89 376.49 953.46 379.12 952.58 381.74 C 950.66 386.29 947.51 389.97 943.13 392.77 C 938.58 395.57 934.03 396.96 929.48 396.96 C 922.65 396.96 916.27 394.43 910.31 389.36 C 901.56 381.3 897.19 369.49 897.19 353.91 C 897.19 348.14 897.54 343.41 898.23 339.73 C 898.23 339.73 898.41 337.81 898.76 333.96 C 898.76 326.61 896.66 321.27 892.46 317.95 C 890.19 316.2 887.56 315.32 884.59 315.32 C 878.64 315.32 874.17 317.86 871.2 322.93 C 869.62 325.56 867.96 329.85 866.21 335.8 C 863.93 343.85 861.39 349.8 858.6 353.65 C 855.8 357.5 852.2 360.48 847.83 362.58 C 843.98 364.32 841.27 365.2 839.7 365.2 L 839.17 365.2 C 838.82 365.02 838.55 364.94 838.38 364.94 L 836.8 364.94 C 831.55 364.41 827.7 362.23 825.25 358.38 C 822.8 354.7 821.23 348.4 820.53 339.47 C 819.83 330.37 818.78 323.98 817.38 320.31 C 815.98 316.63 813.53 313.66 810.03 311.38 C 808.28 310.16 805.74 309.54 802.41 309.54 C 798.04 309.54 794.54 310.86 791.91 313.48 C 787.71 317.68 785.61 323.63 785.61 331.34 C 785.61 335.36 785.7 338.07 785.88 339.47 C 786.4 346.82 786.66 352.6 786.66 356.8 C 786.66 362.05 786.14 365.99 785.09 368.61 C 783.86 371.59 781.94 374.39 779.31 377.02 C 773.54 383.32 766.79 386.47 759.1 386.47 C 754.72 386.47 750.61 385.42 746.75 383.32 C 738.18 378.41 733.89 370.19 733.89 358.64 C 733.89 352.16 735.73 341.4 739.41 326.35 C 744.66 305.87 747.72 292.92 748.59 287.49 C 749.82 279.44 750.78 268.85 751.48 255.72 C 752.36 241.72 753.67 231.48 755.42 225.01 C 757.17 218.88 760.67 213.46 765.92 208.73 C 771 204.18 775.98 201.91 780.89 201.91 C 784.21 201.91 787.54 202.7 790.86 204.27 C 799.96 208.47 809.32 218.45 818.95 234.2 C 822.62 240.67 826.39 245.48 830.24 248.64 C 833.57 251.44 837.24 252.84 841.27 252.84 C 845.47 252.84 849.5 251.09 853.34 247.59 C 857.2 243.91 861.48 237.7 866.21 228.95 C 873.03 216.7 878.46 208.21 882.48 203.48 C 887.39 197.71 892.38 193.68 897.45 191.41 M 1046.89 177.23 C 1051.27 176.7 1056.35 176.44 1062.12 176.44 C 1067.9 176.44 1072.8 176.7 1076.82 177.23 C 1097.12 180.03 1107.28 188.43 1107.28 202.43 C 1107.28 211.36 1104.48 218.62 1098.88 224.22 C 1095.73 227.37 1092.66 229.47 1089.69 230.52 C 1087.06 231.4 1081.55 232.01 1073.14 232.36 C 1048.82 233.76 1034.47 239.62 1030.09 249.95 C 1029.22 252.57 1028.78 254.5 1028.78 255.72 C 1028.78 258 1029.39 260.36 1030.62 262.81 C 1032.89 268.41 1038.41 271.21 1047.16 271.21 C 1050.66 271.21 1055.03 270.52 1060.29 269.11 C 1064.13 267.89 1068.6 267.28 1073.68 267.28 C 1077 267.28 1079.01 267.63 1079.71 268.32 C 1082.34 270.43 1083.65 273.75 1083.65 278.3 C 1083.65 285.13 1081.02 290.47 1075.77 294.32 C 1073.14 296.42 1068.86 298.43 1062.91 300.36 C 1054.51 302.98 1048.56 305.52 1045.06 307.97 C 1041.2 310.59 1038.93 313.48 1038.23 316.63 C 1038.05 316.98 1037.97 317.86 1037.97 319.26 C 1037.97 323.81 1040.15 327.31 1044.53 329.76 C 1046.98 331.16 1051.88 331.86 1059.23 331.86 C 1063.09 331.86 1069.64 331.51 1078.92 330.81 L 1082.86 330.81 C 1084.09 330.64 1084.96 330.55 1085.49 330.55 L 1086.54 330.29 C 1088.64 330.29 1091.09 330.98 1093.89 332.38 C 1099.66 335.36 1102.55 340.26 1102.55 347.09 C 1102.55 354.26 1099.4 361 1093.1 367.3 C 1089.43 370.98 1085.57 373.6 1081.55 375.18 C 1077.7 376.75 1071.4 378.06 1062.65 379.12 C 1046.02 381.21 1037 382.79 1035.61 383.84 C 1033.68 385.42 1026.33 387.16 1013.55 389.09 C 1009.35 389.44 1006.9 389.62 1006.2 389.62 C 995.52 389.62 986.6 386.38 979.42 379.9 C 972.07 373.43 968.05 365.02 967.34 354.7 C 967.34 354.53 967.26 354.26 967.09 353.91 L 967.09 350.5 C 967.09 346.65 968.92 334.66 972.6 314.54 C 974.52 304.91 975.48 296.16 975.48 288.28 C 975.48 279.88 974.08 268.85 971.28 255.2 C 968.83 242.95 967.61 233.59 967.61 227.11 C 967.61 221.16 968.48 216.43 970.23 212.93 C 973.56 204.71 980.47 198.14 990.97 193.25 C 997.8 189.92 1006.64 186.68 1017.49 183.53 C 1029.39 180.2 1039.19 178.1 1046.89 177.23 M 1142.52 189.04 C 1145.84 187.29 1148.64 186.42 1150.92 186.42 L 1152.49 186.42 C 1152.84 186.42 1153.2 186.5 1153.54 186.68 L 1154.6 186.68 C 1159.67 187.03 1163.61 188.34 1166.41 190.62 C 1177.26 198.67 1182.69 213.98 1182.69 236.56 C 1182.69 245.31 1181.72 255.46 1179.8 267.01 C 1176.65 283.64 1175.07 295.37 1175.07 302.2 C 1175.07 309.19 1176.3 314.97 1178.75 319.52 C 1183.12 328.62 1191.17 333.17 1202.9 333.17 C 1207.27 333.17 1212.09 332.65 1217.34 331.6 C 1223.82 330.55 1229.5 330.02 1234.4 330.02 C 1239.3 330.02 1243.86 330.98 1248.05 332.91 C 1258.21 337.81 1263.29 346.04 1263.29 357.59 C 1263.29 365.11 1260.74 371.41 1255.67 376.49 C 1252.34 379.82 1248.23 382.18 1243.33 383.58 C 1237.38 385.15 1228.54 386.47 1216.82 387.52 C 1205.96 388.21 1196.07 389.62 1187.15 391.72 C 1170.17 395.57 1160.55 397.49 1158.27 397.49 C 1158.27 397.49 1158.01 397.4 1157.48 397.23 L 1154.07 397.23 C 1139.37 396.71 1130 389.44 1125.98 375.44 C 1125.11 371.94 1124.66 365.55 1124.66 356.27 C 1124.66 343.85 1125.28 331.86 1126.5 320.31 C 1127.73 309.29 1128.34 298.17 1128.34 286.97 C 1128.34 276.29 1127.64 266.23 1126.24 256.77 C 1124.66 246.1 1123.88 236.12 1123.88 226.85 C 1123.88 217.57 1124.66 211.01 1126.24 207.16 C 1129.39 199.11 1134.82 193.07 1142.52 189.04 M 1352.87 258.35 C 1349.72 256.95 1346.92 256.25 1344.47 256.25 C 1337.82 256.25 1332.57 259.49 1328.71 265.96 C 1326.97 268.59 1326.09 273.05 1326.09 279.35 C 1326.09 285.3 1326.97 290.29 1328.71 294.32 C 1332.92 303.77 1338.52 308.5 1345.52 308.5 C 1350.07 308.5 1354.36 306.22 1358.38 301.67 C 1360.83 299.22 1362.32 296.68 1362.85 294.05 C 1363.55 291.08 1363.9 287.23 1363.9 282.5 C 1363.9 277.6 1363.55 273.75 1362.85 270.95 C 1362.14 268.85 1360.75 266.49 1358.64 263.86 C 1356.2 260.71 1354.27 258.88 1352.87 258.35 M 1343.42 182.74 C 1345.69 182.04 1348.84 181.69 1352.87 181.69 C 1358.82 181.69 1364.07 182.83 1368.62 185.11 C 1376.67 189.13 1383.06 197.27 1387.79 209.52 C 1392.69 222.12 1396.27 239.97 1398.55 263.07 C 1401.88 296.16 1406.69 321.62 1412.99 339.47 C 1418.41 354.88 1421.12 365.02 1421.12 369.93 C 1421.12 377.45 1418.5 383.84 1413.25 389.09 C 1408.7 393.64 1403.01 395.92 1396.19 395.92 L 1394.87 395.92 C 1394.53 395.92 1394.18 395.83 1393.82 395.66 L 1393.3 395.66 C 1387.7 395.13 1383.15 393.29 1379.65 390.14 C 1376.15 386.99 1372.38 381.21 1368.36 372.81 C 1364.68 364.77 1361.01 359.25 1357.33 356.27 C 1353.66 353.12 1349.19 351.55 1343.95 351.55 C 1337.64 351.55 1329.5 355.75 1319.53 364.15 C 1313.05 369.23 1308.24 372.55 1305.09 374.12 C 1300.19 376.4 1295.55 377.54 1291.18 377.54 C 1285.57 377.54 1280.59 375.79 1276.21 372.29 C 1271.84 368.79 1269.04 364.24 1267.81 358.64 C 1267.46 355.84 1267.29 354.18 1267.29 353.65 C 1267.29 347.35 1269.73 337.9 1274.64 325.3 C 1281.29 307.97 1286.01 294.84 1288.81 285.92 C 1291.26 277.69 1293.45 268.15 1295.38 257.3 C 1296.43 249.77 1297.91 242.6 1299.84 235.77 C 1302.11 228.25 1306.23 219.67 1312.18 210.04 C 1318.12 200.42 1323.55 193.86 1328.46 190.36 C 1333.18 186.68 1338.17 184.14 1343.42 182.74 M 1524.62 255.99 C 1520.78 254.06 1516.93 253.1 1513.08 253.1 C 1502.75 253.1 1495.93 259.05 1492.6 270.95 C 1488.75 283.73 1486.82 298.25 1486.82 314.54 C 1486.82 324.51 1487.7 330.89 1489.45 333.7 C 1493.82 342.1 1500.74 346.3 1510.19 346.3 L 1512.55 346.3 C 1520.25 345.6 1527.17 341.92 1533.29 335.27 C 1539.42 328.62 1543.36 320.39 1545.11 310.59 C 1545.98 304.82 1546.42 300.97 1546.42 299.05 C 1546.42 295.89 1545.89 291.87 1544.84 286.97 C 1541.87 271.57 1535.13 261.24 1524.62 255.99 M 1486.04 182.22 C 1488.84 181.69 1491.81 181.43 1494.96 181.43 C 1506.34 181.43 1519.73 185.54 1535.13 193.77 C 1551.41 202.52 1562.43 210.22 1568.21 216.87 C 1573.81 223.52 1580.2 236.12 1587.38 254.68 C 1594.55 273.93 1598.14 288.54 1598.14 298.52 C 1598.14 302.37 1597.7 306.22 1596.82 310.07 C 1594.9 320.92 1590.7 331.34 1584.22 341.31 C 1576.87 352.51 1567.51 363.8 1556.13 375.18 C 1542.13 389 1531.11 397.58 1523.05 400.91 C 1514.65 404.41 1501.79 406.33 1484.46 406.68 C 1470.46 406.68 1460.04 405.46 1453.22 403.01 C 1446.57 400.55 1441.58 396.09 1438.26 389.62 C 1436.16 385.42 1435.11 378.68 1435.11 369.4 C 1435.11 362.75 1435.63 354.26 1436.68 343.94 C 1438.43 329.93 1439.31 318.21 1439.31 308.76 C 1439.31 298.95 1437.64 285.13 1434.32 267.28 C 1432.04 255.9 1430.9 246.01 1430.9 237.61 C 1430.9 227.29 1433.36 218.54 1438.26 211.36 C 1442.98 204.18 1449.72 197.97 1458.47 192.72 C 1466.87 187.64 1476.06 184.14 1486.04 182.22 M 1690.88 177.23 C 1695.25 176.7 1700.32 176.44 1706.1 176.44 C 1711.88 176.44 1716.78 176.7 1720.8 177.23 C 1741.11 180.03 1751.26 188.43 1751.26 202.43 C 1751.26 211.36 1748.46 218.62 1742.86 224.22 C 1739.7 227.37 1736.64 229.47 1733.67 230.52 C 1731.04 231.4 1725.53 232.01 1717.13 232.36 C 1692.8 233.76 1678.45 239.62 1674.07 249.95 C 1673.2 252.57 1672.76 254.5 1672.76 255.72 C 1672.76 258 1673.37 260.36 1674.6 262.81 C 1676.88 268.41 1682.39 271.21 1691.14 271.21 C 1694.64 271.21 1699.01 270.52 1704.26 269.11 C 1708.11 267.89 1712.57 267.28 1717.65 267.28 C 1720.98 267.28 1722.99 267.63 1723.69 268.32 C 1726.32 270.43 1727.63 273.75 1727.63 278.3 C 1727.63 285.13 1725 290.47 1719.75 294.32 C 1717.13 296.42 1712.84 298.43 1706.89 300.36 C 1698.49 302.98 1692.54 305.52 1689.04 307.97 C 1685.19 310.59 1682.91 313.48 1682.21 316.63 C 1682.04 316.98 1681.95 317.86 1681.95 319.26 C 1681.95 323.81 1684.14 327.31 1688.51 329.76 C 1690.96 331.16 1695.86 331.86 1703.21 331.86 C 1707.06 331.86 1713.62 331.51 1722.91 330.81 L 1726.84 330.81 C 1728.07 330.64 1728.94 330.55 1729.46 330.55 L 1730.52 330.29 C 1732.62 330.29 1735.07 330.98 1737.87 332.38 C 1743.64 335.36 1746.53 340.26 1746.53 347.09 C 1746.53 354.26 1743.38 361 1737.08 367.3 C 1733.4 370.98 1729.55 373.6 1725.53 375.18 C 1721.68 376.75 1715.38 378.06 1706.62 379.12 C 1690 381.21 1680.98 382.79 1679.59 383.84 C 1677.66 385.42 1670.31 387.16 1657.54 389.09 C 1653.33 389.44 1650.88 389.62 1650.18 389.62 C 1639.51 389.62 1630.58 386.38 1623.41 379.9 C 1616.05 373.43 1612.03 365.02 1611.33 354.7 C 1611.33 354.53 1611.24 354.26 1611.06 353.91 L 1611.06 350.5 C 1611.06 346.65 1612.9 334.66 1616.57 314.54 C 1618.5 304.91 1619.47 296.16 1619.47 288.28 C 1619.47 279.88 1618.07 268.85 1615.27 255.2 C 1612.82 242.95 1611.59 233.59 1611.59 227.11 C 1611.59 221.16 1612.46 216.43 1614.21 212.93 C 1617.54 204.71 1624.45 198.14 1634.95 193.25 C 1641.78 189.92 1650.62 186.68 1661.47 183.53 C 1673.37 180.2 1683.18 178.1 1690.88 177.23"/></svg>
+    </h1>
+
+    <div class="panels">
+      <figure>
+        <img src="img/mapa-2400.webp" srcset="img/mapa-1200.webp 1200w, img/mapa-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 32px), min(1563px, 82vw)" width="2400" height="1574" decoding="async" alt="Aerial map of the area at U Vozovny street. The studio building is marked in pink, the parking area across the street in blue.">
+      </figure>
+      <figure>
+        <img src="img/zazemi-2400.webp" srcset="img/zazemi-1200.webp 1200w, img/zazemi-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 32px), min(1563px, 82vw)" width="2400" height="1574" loading="lazy" decoding="async" alt="3D plan of the base with dimensions: a round table, kitchen counter, clothes rails, two makeup places with chairs, toilets and washbasins.">
+      </figure>
+      <figure>
+        <img src="img/pudorys-2400.webp" srcset="img/pudorys-1200.webp 1200w, img/pudorys-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 32px), min(1563px, 82vw)" width="2400" height="1574" loading="lazy" decoding="async" alt="2nd floor plan. Studio hall of 331 m² with a 4 m ceiling. Next to it the base with kitchen, makeup, costume and toilets (3 cubicles, 2 urinals), a lift with 80 cm doors and a 100 × 200 × 200 cm cabin, and the staircase.">
+      </figure>
+      <figure>
+        <img src="img/hala-1-2400.webp" srcset="img/hala-1-1200.webp 1200w, img/hala-1-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 32px), min(1563px, 82vw)" width="2400" height="1574" loading="lazy" decoding="async" alt="The empty studio hall: concrete floor, white walls and red steel roof trusses.">
+      </figure>
+      <figure>
+        <img src="img/hala-2-2400.webp" srcset="img/hala-2-1200.webp 1200w, img/hala-2-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 32px), min(1563px, 82vw)" width="2400" height="1574" loading="lazy" decoding="async" alt="The studio hall with the lights on, scaffolding and people at work.">
+      </figure>
+    </div>
+  </div>
+</div>
+
+<section class="band band--pink" aria-labelledby="price-title">
+  <div class="col">
+    <h2 class="tab" id="price-title">Price list for services and studio rental</h2>
+
+    <div class="table-wrap">
+      <table class="prices">
+        <thead>
+          <tr>
+            <th scope="col" class="c-item">Item<br>/ service</th>
+            <th scope="col" class="c-unit">Unit</th>
+            <th scope="col" class="c-rate">Rate</th>
+            <th scope="col" class="c-qty">Quantity</th>
+            <th scope="col" class="c-total">Total<br>excl. VAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-rate="13000">
+            <th scope="row">Prep day</th>
+            <td class="col-unit"></td>
+            <td>13,000.00 CZK</td>
+            <td class="qty"><input id="qty-prep" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, prep day"></td>
+            <td><output for="qty-prep">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="15000">
+            <th scope="row">Shoot day</th>
+            <td class="col-unit"></td>
+            <td>15,000.00 CZK</td>
+            <td class="qty"><input id="qty-shoot" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, shoot day"></td>
+            <td><output for="qty-shoot">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="13000">
+            <th scope="row">Wrap day (strike)</th>
+            <td class="col-unit"></td>
+            <td>13,000.00 CZK</td>
+            <td class="qty"><input id="qty-wrap" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, wrap day"></td>
+            <td><output for="qty-wrap">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="3500">
+            <th scope="row">Studio service / day</th>
+            <td class="col-unit"></td>
+            <td>3,500.00 CZK</td>
+            <td class="qty"><input id="qty-service" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, studio service per day"></td>
+            <td><output for="qty-service">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="1200">
+            <th scope="row">Cleaning service / day</th>
+            <td class="col-unit"></td>
+            <td>1,200.00 CZK</td>
+            <td class="qty"><input id="qty-cleaning" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, cleaning service per day"></td>
+            <td><output for="qty-cleaning">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="8">
+            <th scope="row">Electricity / kWh</th>
+            <td class="col-unit"></td>
+            <td>8.00 CZK</td>
+            <td class="qty"><input id="qty-electricity" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, electricity in kWh"></td>
+            <td><output for="qty-electricity">0.00 CZK</output></td>
+          </tr>
+          <tr data-rate="500">
+            <th scope="row">Heating</th>
+            <td class="col-unit"></td>
+            <td>500.00 CZK</td>
+            <td class="qty"><input id="qty-heating" type="number" inputmode="decimal" min="0" step="any" autocomplete="off" aria-label="Quantity, heating"></td>
+            <td><output for="qty-heating">0.00 CZK</output></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <td class="col-unit"></td>
+            <td colspan="2"></td>
+            <td><output id="grand" aria-live="polite">0.00 CZK</output></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p class="notes">
+      <span>Notes on the price list</span>
+      <span>All prices are listed in CZK, excluding VAT.</span>
+      <span>The blank columns are for entering the specific number of units when calculating an order.</span>
+    </p>
+  </div>
+</section>
+
+<script>
+(() => {
+  const table = document.querySelector('.prices');
+  const rows = [...table.querySelectorAll('tbody tr')];
+  const grand = document.getElementById('grand');
+  const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const money = (n) => fmt.format(n) + ' CZK';
+
+  function update() {
+    let sum = 0;
+    for (const row of rows) {
+      const input = row.querySelector('input');
+      let qty = parseFloat(String(input.value).replace(',', '.'));
+      if (!Number.isFinite(qty) || qty < 0) qty = 0;
+      const total = Math.round(Number(row.dataset.rate) * qty * 100) / 100;
+      row.querySelector('output').value = money(total);
+      sum += total;
+    }
+    grand.value = money(sum);
+  }
+
+  table.addEventListener('input', update);
+  update();
+})();
+</script>
+
+</body>
+</html>
